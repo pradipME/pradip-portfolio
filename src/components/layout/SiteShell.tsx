@@ -5,6 +5,7 @@ import { Philosophy } from '../philosophy/Philosophy'
 import { Projects } from '../projects/Projects'
 import { Skills } from '../skills/Skills'
 import { About } from '../about/About'
+import { Contact } from '../contact/Contact'
 import { Footer } from '../footer/Footer'
 import { Preloader } from './Preloader'
 import { useLenis } from '../../hooks/useLenis'
@@ -33,6 +34,7 @@ export function SiteShell() {
         <Projects />
         <Skills />
         <About />
+        <Contact />
       </main>
       <Footer />
     </div>
