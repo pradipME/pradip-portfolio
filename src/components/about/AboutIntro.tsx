@@ -1,5 +1,6 @@
 import type { AboutData } from '../../data/about'
 import { SectionLabel } from '../ui/SectionLabel'
+import { AboutPortrait } from './AboutPortrait'
 
 interface AboutIntroProps {
   data: AboutData
@@ -7,7 +8,7 @@ interface AboutIntroProps {
 
 export function AboutIntro({ data }: AboutIntroProps) {
   return (
-    <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:gap-16">
+    <div className="grid gap-12 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-start md:gap-16">
       <div>
         <SectionLabel index={data.index} label={data.label} />
 
@@ -21,12 +22,10 @@ export function AboutIntro({ data }: AboutIntroProps) {
             </span>
           ))}
         </h2>
-      </div>
 
-      <div className="flex flex-col justify-center md:pt-0">
         <p
           data-reveal
-          className="max-w-2xl text-[clamp(1.25rem,3vw,1.75rem)] leading-snug text-text-primary"
+          className="mt-10 max-w-2xl text-[clamp(1.25rem,3vw,1.75rem)] leading-snug text-text-primary"
         >
           {data.intro}
         </p>
@@ -37,6 +36,8 @@ export function AboutIntro({ data }: AboutIntroProps) {
           {data.philosophy}
         </p>
       </div>
+
+      <AboutPortrait />
     </div>
   )
 }
