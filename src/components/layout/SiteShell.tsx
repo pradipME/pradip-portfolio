@@ -3,6 +3,7 @@ import { Navbar } from '../navigation/Navbar'
 import { Hero } from '../hero/Hero'
 import { Philosophy } from '../philosophy/Philosophy'
 import { Projects } from '../projects/Projects'
+import { Skills } from '../skills/Skills'
 import { Footer } from '../footer/Footer'
 import { Preloader } from './Preloader'
 import { useLenis } from '../../hooks/useLenis'
@@ -29,6 +30,7 @@ export function SiteShell() {
         <Hero active={ready} />
         <Philosophy />
         <Projects />
+        <Skills />
       </main>
       <Footer />
     </div>
