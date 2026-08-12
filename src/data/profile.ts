@@ -21,9 +21,9 @@ export const profile: Profile = {
   summary:
     'A Java and Spring Boot developer who also works across React, TypeScript and Selenium automation — building reliable, tested, production-minded systems.',
   location: 'India',
-  email: 'mailto:hello@example.com',
-  github: '',
-  linkedin: '',
+  email: 'mailto:pradip15102004@gmail.com',
+  github: 'https://github.com/pradipME',
+  linkedin: 'https://www.linkedin.com/in/pradip-sonawane-40b085318/',
 }
 
 export const navLinks: NavLink[] = [
