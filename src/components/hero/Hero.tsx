@@ -1,8 +1,13 @@
 import { useRef } from 'react'
 import { useGSAP } from '../../animations/gsapSetup'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
-import { heroEntrance, heroScroll, heroScrollIndicator } from '../../animations/heroAnimations'
-import { HeroBackground } from './HeroBackground'
+import {
+  heroEntrance,
+  heroScroll,
+  heroScrollIndicator,
+  heroVisualMotion,
+} from '../../animations/heroAnimations'
+import { HeroVisual } from '../visuals/HeroVisual'
 import { HeroEyebrow } from './HeroEyebrow'
 import { HeroHeadline } from './HeroHeadline'
 import { HeroSubheading } from './HeroSubheading'
@@ -24,6 +29,7 @@ export function Hero({ active }: HeroProps) {
       heroEntrance(rootRef.current)
       heroScroll(rootRef.current)
       heroScrollIndicator(rootRef.current)
+      heroVisualMotion(rootRef.current)
     },
     { scope: rootRef, dependencies: [active, reducedMotion] },
   )
@@ -36,7 +42,7 @@ export function Hero({ active }: HeroProps) {
       className="relative flex min-h-svh flex-col overflow-hidden"
     >
       <div data-hero-background className="absolute inset-0">
-        <HeroBackground />
+        <HeroVisual />
       </div>
 
       <div

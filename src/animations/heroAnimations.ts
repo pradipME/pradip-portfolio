@@ -57,3 +57,18 @@ export function heroScrollIndicator(scope: HTMLElement): gsap.core.Timeline {
 
   return tl
 }
+
+export function heroVisualMotion(scope: HTMLElement): void {
+  const layers = gsap.utils.toArray<HTMLElement>(scope.querySelectorAll('[data-hero-float]'))
+
+  layers.forEach((layer, index) => {
+    gsap.to(layer, {
+      y: 10 + index * 3,
+      x: index % 2 === 0 ? 8 : -8,
+      duration: 7 + index * 1.8,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+    })
+  })
+}
