@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
+import { prefersReducedMotion } from '../lib/motion'
 
 export function usePrefersReducedMotion(): boolean {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
+    const handleChange = () => setReducedMotion(mediaQuery.matches)
 
     handleChange()
     mediaQuery.addEventListener('change', handleChange)
@@ -13,5 +14,5 @@ export function usePrefersReducedMotion(): boolean {
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
 
-  return prefersReducedMotion
+  return reducedMotion
 }
