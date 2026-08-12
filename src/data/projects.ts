@@ -1,50 +1,56 @@
+export type ProjectVisualKind = 'finflow' | 'thinkit' | 'selenium'
+
 export interface Project {
   id: string
-  index: string
+  number: string
   title: string
   category: string
   description: string
   technologies: string[]
-  github: string
+  visual: ProjectVisualKind
+  image: string | null
+  github: string | null
   live: string | null
-  year: string
 }
 
 export const projects: Project[] = [
   {
     id: 'finflow',
-    index: '01',
+    number: '01',
     title: 'FinFlow',
     category: 'Digital Banking System',
     description:
       'A modular-monolith digital banking platform. Java / Spring Boot backend serving a React frontend, MySQL persistence and REST APIs with authentication and role-based access control.',
     technologies: ['Java', 'Spring Boot', 'React', 'MySQL', 'REST APIs', 'RBAC'],
-    github: 'https://github.com/pradip-sonawane/finflow',
+    visual: 'finflow',
+    image: null,
+    github: null,
     live: null,
-    year: '2026',
   },
   {
     id: 'thinkit',
-    index: '02',
+    number: '02',
     title: 'ThinkiT',
     category: 'Blinkit-style E-commerce',
     description:
       'A responsive quick-commerce storefront. React + Vite frontend backed by Spring Boot REST APIs and MySQL, built for fast browsing on any screen size.',
     technologies: ['React', 'Vite', 'TypeScript', 'Spring Boot', 'MySQL', 'REST APIs'],
-    github: 'https://github.com/pradip-sonawane/thinkit',
+    visual: 'thinkit',
+    image: null,
+    github: null,
     live: null,
-    year: '2026',
   },
   {
     id: 'selenium-automation',
-    index: '03',
+    number: '03',
     title: 'Selenium Automation',
-    category: 'Test Automation Suite',
+    category: 'Web Automation & Testing',
     description:
       'Java + Selenium WebDriver test suites with TestNG and Maven — cross-browser coverage grounded in manual testing concepts for dependable regression checks.',
     technologies: ['Java', 'Selenium', 'TestNG', 'Maven', 'WebDriver'],
-    github: 'https://github.com/pradip-sonawane/selenium-automation',
+    visual: 'selenium',
+    image: null,
+    github: null,
     live: null,
-    year: '2026',
   },
 ]

@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { Navbar } from '../navigation/Navbar'
 import { Hero } from '../hero/Hero'
 import { Philosophy } from '../philosophy/Philosophy'
+import { Projects } from '../projects/Projects'
 import { Footer } from '../footer/Footer'
 import { Preloader } from './Preloader'
 import { useLenis } from '../../hooks/useLenis'
@@ -27,6 +28,7 @@ export function SiteShell() {
       <main id="main" className="flex-1">
         <Hero active={ready} />
         <Philosophy />
+        <Projects />
       </main>
       <Footer />
     </div>
