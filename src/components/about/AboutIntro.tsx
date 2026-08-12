@@ -1,6 +1,5 @@
 import type { AboutData } from '../../data/about'
-import { SectionLabel } from '../ui/SectionLabel'
-import { AboutPortrait } from './AboutPortrait'
+import { cn } from '../../lib/cn'
 
 interface AboutIntroProps {
   data: AboutData
@@ -8,36 +7,38 @@ interface AboutIntroProps {
 
 export function AboutIntro({ data }: AboutIntroProps) {
   return (
-    <div className="grid gap-12 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-start md:gap-16">
-      <div>
-        <SectionLabel index={data.index} label={data.label} />
+    <div className="about-intro">
+      <p
+        data-about-label
+        className="flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.32em] text-text-tertiary"
+      >
+        <span className="text-accent">{data.index}</span>
+        <span aria-hidden="true" className="h-px w-8 bg-line" />
+        {data.label}
+      </p>
 
-        <h2
-          data-reveal
-          className="mt-8 font-display text-[clamp(2.75rem,8vw,7rem)] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-text-primary"
-        >
-          {data.heading.map((line) => (
-            <span key={line} className="block">
+      <h2 className="mt-8 font-display text-[clamp(2.75rem,6vw,5.75rem)] font-bold uppercase leading-[0.92] tracking-[-0.02em] text-text-primary">
+        {data.heading.map((line, index) => (
+          <span key={line} className="block overflow-hidden">
+            <span
+              data-about-line
+              className={cn(
+                'block will-change-transform',
+                index === data.heading.length - 1 && 'text-accent',
+              )}
+            >
               {line}
             </span>
-          ))}
-        </h2>
+          </span>
+        ))}
+      </h2>
 
-        <p
-          data-reveal
-          className="mt-10 max-w-2xl text-[clamp(1.25rem,3vw,1.75rem)] leading-snug text-text-primary"
-        >
-          {data.intro}
-        </p>
-        <p
-          data-reveal
-          className="mt-6 max-w-xl text-base leading-relaxed text-text-secondary"
-        >
-          {data.philosophy}
-        </p>
-      </div>
-
-      <AboutPortrait />
+      <p
+        data-about-intro
+        className="mt-10 max-w-xl text-[clamp(1.1rem,2vw,1.5rem)] leading-snug text-text-primary"
+      >
+        {data.intro}
+      </p>
     </div>
   )
 }
