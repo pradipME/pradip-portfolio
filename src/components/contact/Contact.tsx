@@ -10,7 +10,7 @@ export function Contact() {
   useReveal(rootRef)
 
   return (
-    <section id="contact" ref={rootRef} aria-label="Contact" className="bg-background">
+    <section id="contact" ref={rootRef} aria-label="Contact">
       <div className="mx-auto w-full max-w-(--content-max) px-(--gutter) py-24 sm:py-32">
         <ContactCTA data={contact} />
         <ContactLinks />

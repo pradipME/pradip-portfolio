@@ -28,7 +28,7 @@ export function About() {
       id="about"
       ref={rootRef}
       aria-label="About"
-      className="relative overflow-hidden bg-background py-24 sm:py-32"
+      className="relative overflow-hidden py-24 sm:py-32"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -right-52 -top-52 h-[46rem] w-[46rem] rounded-full bg-[radial-gradient(circle,rgba(232,71,42,0.1)_0%,transparent_60%)]" />

@@ -112,6 +112,56 @@
   animation: float-drift 9s ease-in-out infinite;
 }
 
+@keyframes cosmic-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cosmic-glow {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes cosmic-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+.cosmic-disk {
+  transform-box: view-box;
+  transform-origin: 450px 300px;
+  animation: cosmic-rotate 120s linear infinite;
+  will-change: transform;
+}
+
+.cosmic-glow {
+  animation: cosmic-glow 12s ease-in-out infinite;
+}
+
+.cosmic-particle {
+  animation: cosmic-drift var(--cosmic-drift, 11s) ease-in-out infinite;
+  animation-delay: var(--cosmic-delay, 0s);
+}
+
+@media (max-width: 767px) {
+  .cosmic-disk,
+  .cosmic-glow,
+  .cosmic-particle {
+    animation: none;
+  }
+}
+
 @layer components {
   .about-grid {
     display: grid;

@@ -26,7 +26,7 @@ export function Philosophy() {
       id="philosophy"
       ref={rootRef}
       aria-label="Philosophy"
-      className="relative bg-background"
+      className="relative"
     >
       <h2 className="sr-only">Philosophy</h2>
 

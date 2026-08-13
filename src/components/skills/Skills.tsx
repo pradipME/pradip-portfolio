@@ -22,7 +22,7 @@ export function Skills() {
   )
 
   return (
-    <section id="skills" ref={rootRef} aria-label="Capabilities" className="bg-background">
+    <section id="skills" ref={rootRef} aria-label="Capabilities">
       <div className="mx-auto w-full max-w-(--content-max) px-(--gutter) py-24 sm:py-32">
         <SectionLabel index={skills.index} label={skills.label} />
 

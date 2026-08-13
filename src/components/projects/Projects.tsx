@@ -22,7 +22,7 @@ export function Projects() {
   )
 
   return (
-    <section id="work" ref={rootRef} aria-label="Selected projects" className="bg-background">
+    <section id="work" ref={rootRef} aria-label="Selected projects">
       <div className="mx-auto w-full max-w-(--content-max) px-(--gutter) py-24 sm:py-32">
         <SectionLabel index="02" label="Selected Work" />
 

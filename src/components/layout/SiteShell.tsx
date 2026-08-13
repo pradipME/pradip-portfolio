@@ -10,6 +10,7 @@ import { Footer } from '../footer/Footer'
 import { Preloader } from './Preloader'
 import { useLenis } from '../../hooks/useLenis'
 import { prefersReducedMotion } from '../../lib/motion'
+import { CosmicBackground } from '../backgrounds/CosmicBackground'
 
 export function SiteShell() {
   const reducedMotion = prefersReducedMotion()
@@ -19,7 +20,8 @@ export function SiteShell() {
   useLenis()
 
   return (
-    <div id="top" className="flex min-h-dvh flex-col bg-background text-text-primary">
+    <div id="top" className="flex min-h-dvh flex-col text-text-primary">
+      <CosmicBackground />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[110] focus:rounded-sm focus:bg-accent focus:px-4 focus:py-2 focus:font-medium focus:text-background"
