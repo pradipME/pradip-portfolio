@@ -1,5 +1,5 @@
-import { SiteShell } from '../components/layout/SiteShell'
+import { Scene } from '../sections/Scene'
 
 export default function App() {
-  return <SiteShell />
+  return <Scene />
 }
