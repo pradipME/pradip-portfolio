@@ -409,6 +409,14 @@ a.card:focus-visible .card-meta span:first-child{ color:var(--bone-dim); }
 .card-out svg{ width:9px; height:9px; }
 a.card:hover .card-out, a.card:focus-visible .card-out{
   border-color:rgba(224,35,28,.70); background:rgba(5,7,10,.66); }
+/* A card that opens a running app is marked the way a stream is marked: the same
+   red the plate's own LIVE dot carries, so the still and its badge agree instead
+   of the badge waiting for a hover to turn. Keyed off a class rather than the
+   word, so the GitHub card keeps the bone outline it has always had. */
+.card-out.is-live{ background:rgba(224,35,28,.92); border-color:rgba(224,35,28,.92); color:#fff; }
+.card-out.is-live svg{ stroke:#fff; }
+a.card:hover .card-out.is-live, a.card:focus-visible .card-out.is-live{
+  background:rgb(224,35,28); border-color:rgb(224,35,28); }
 /* The cards carry no border, outline or ring of their own: each frame is a live
    window onto the scene, and a rectangle drawn around it fights the cloth for
    the same edge. A card still reads as a card from its still, its caption, the
@@ -1205,7 +1213,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     <a class="card" href="https://softyfy.onrender.com" target="_blank" rel="noopener noreferrer" data-rv="up" data-view="0" data-cursor aria-label="SoftyFy — a music streaming PWA built with React, TypeScript and Vite. Opens in a new tab.">
       <div class="card-fr" data-frame>
         <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
-        <span class="card-out">Live<svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.7"/></svg></span>
+        <span class="card-out is-live">Live<svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.7"/></svg></span>
         <i class="glow" style="--gx:80.2%; --gy:23.9%; --gr:22%; --gt:6.1s; --gt2:9.7s; --gc1:rgba(255,142,108,.50); --gc2:rgba(212,56,38,.24)"></i>
         <div class="card-lab"><b>SoftyFy</b><span class="jp">音楽</span></div>
       </div>
@@ -1214,7 +1222,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     <a class="card" href="https://smart-job-tracker-lilac.vercel.app" target="_blank" rel="noopener noreferrer" data-rv="up" data-view="1" data-cursor aria-label="JobTrack — an AI applicant tracking system. Opens the live app in a new tab.">
       <div class="card-fr" data-frame>
         <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
-        <span class="card-out">Live<svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.7"/></svg></span>
+        <span class="card-out is-live">Live<svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.7"/></svg></span>
         <i class="glow glow--flame" style="--gx:70.5%; --gy:47.2%; --gr:14%; --gt:3.7s; --gt2:5.3s; --gc1:rgba(255,198,124,.62); --gc2:rgba(226,118,40,.30)"></i>
         <div class="card-lab"><b>JobTrack</b><span class="jp">求職</span></div>
       </div>
@@ -1223,7 +1231,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     <a class="card" href="https://finflow-backend-014a.onrender.com/login" target="_blank" rel="noopener noreferrer" data-rv="up" data-view="2" data-cursor aria-label="FinFlow — a digital banking platform: accounts, cards, transfers and savings. Opens the live app in a new tab.">
       <div class="card-fr" data-frame>
         <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
-        <span class="card-out">Live<svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.7"/></svg></span>
+        <span class="card-out is-live">Live<svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.7"/></svg></span>
         <i class="glow" style="--gx:48.0%; --gy:16.8%; --gr:20%; --gt:7.3s; --gt2:11.2s; --gc1:rgba(255,138,104,.52); --gc2:rgba(208,54,36,.24)"></i>
         <div class="card-lab"><b>FinFlow</b><span class="jp">金融</span></div>
       </div>
