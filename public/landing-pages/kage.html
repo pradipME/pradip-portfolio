@@ -323,6 +323,14 @@ a.card:focus-visible .card-meta span:first-child{ color:var(--bone-dim); }
 .cloth-out{ position:absolute; pointer-events:none; z-index:1; }
 .on-cloth{ background:none !important; outline:0 !important; overflow:visible; }
 .on-cloth::after{ display:none; }
+/* The touch fallback: no WebGL2 means no cloth canvas, so the still has to
+   carry a little movement itself. A shallow perspective tilt reads as fabric
+   without lifting the crop off the frame the way a big scale would. */
+@keyframes card-billow{
+  0%,100%{ transform:perspective(900px) rotateX(0deg) scale(1.002); }
+  50%{ transform:perspective(900px) rotateX(-1.1deg) scale(1.012); }
+}
+.no-cloth{ animation:card-billow 6s var(--ease-io) infinite; }
 
 /* ------------------------------------------------- the lights in the stills
    The three plates each have one source in them — two blood moons and a lit
@@ -381,7 +389,7 @@ a.card:focus-visible .card-meta span:first-child{ color:var(--bone-dim); }
   background-attachment:fixed; }
 .no-webgl .peek-fr{ background:linear-gradient(160deg,#162326,#0b1013 55%,#241010); }
 .no-webgl .word-fb{
-  display:block; position:absolute; left:0; right:0; bottom:16%; z-index:1;
+  display:block; position:absolute; left:0; right:0; bottom:26%; z-index:1;
   font-family:'Wordmark','Onest',sans-serif; font-weight:600; font-size:21.4vw; line-height:.78;
   letter-spacing:.052em; text-align:center; pointer-events:none;
   background:linear-gradient(#e2ece5, #97a89c); -webkit-background-clip:text; background-clip:text;
@@ -3346,11 +3354,17 @@ function buildAtmosphere() {
   emb.frustumCulled = false; emb.renderOrder = 5;
   scene.add(emb); WORLD.embers = emb;
 
-  /* rain in the slot of open sky */
+  /* rain in the slot of open sky.
+     The streak is a world-space line segment, so on a tall phone the desktop's
+     0.3–0.8 unit drop collapses to a pixel or two: additive blending then reads
+     as a field of white dots instead of rain. A narrow frame gets fewer, longer
+     and dimmer streaks so the same weather still falls, but as lines. */
+  const TALL = vpW() / vpH() < 1.05;
   if (!LOW) {
-    const D = 900, rp = new Float32Array(D * 2 * 3), rt = new Float32Array(D * 2), rs = new Float32Array(D * 2), rl = new Float32Array(D * 2);
+    const D = TALL ? 420 : 900, rp = new Float32Array(D * 2 * 3), rt = new Float32Array(D * 2), rs = new Float32Array(D * 2), rl = new Float32Array(D * 2);
     for (let i = 0; i < D; i++) {
-      const x = (rnd() - .5) * 40, z = -30 + rnd() * 34, y = rnd() * 17, sp = 7 + rnd() * 9, ln = .30 + rnd() * .55;
+      const x = (rnd() - .5) * 40, z = -30 + rnd() * 34, y = rnd() * 17, sp = 7 + rnd() * 9,
+        ln = (.30 + rnd() * .55) * (TALL ? 3.4 : 1);
       for (let k = 0; k < 2; k++) {
         const o = (i * 2 + k) * 3;
         rp[o] = x; rp[o + 1] = y; rp[o + 2] = z;
@@ -3372,7 +3386,7 @@ function buildAtmosphere() {
         ' p.y = y + aTop*aLen;\n' +
         ' vA = smoothstep(0.0,3.0,y)*smoothstep(17.0,11.0,y);\n' +
         ' gl_Position = projectionMatrix * modelViewMatrix * vec4(p,1.0); }',
-      fragmentShader: 'varying float vA;\nvoid main(){ gl_FragColor = vec4(0.55,0.74,0.82, vA*0.024); }'
+      fragmentShader: 'varying float vA;\nvoid main(){ gl_FragColor = vec4(' + (TALL ? '0.38,0.52,0.60' : '0.55,0.74,0.82') + ', vA*' + (TALL ? '0.010' : '0.024') + '); }'
     }));
     rain.frustumCulled = false; rain.renderOrder = 6;
     scene.add(rain); WORLD.rain = rain;
@@ -3722,7 +3736,9 @@ void main () {
   outColor = vec4(vec3(uDark) * a, a);
 }`;
 
-const CL_SEG = 96, CL_NODES = CL_SEG + 1, CL_DT = 1 / 120;
+/* Touch devices run the same wind-driven fabric, but the brush needs no
+   96×96 mesh: a lighter grid keeps five cloth canvases affordable on a phone. */
+const CL_SEG = COARSE ? 64 : 96, CL_NODES = CL_SEG + 1, CL_DT = 1 / 120;
 const CL_WAVE = 30, CL_STIFF = 0.55, CL_GAIN = 5.0, CL_BLEED = 48;
 const CLOTH_DEFAULTS = {
   pin: 'top', wind: 3, speed: .5, amplitude: 30, drape: 40, brush: 2.05,
@@ -3808,7 +3824,7 @@ function createCloth(output, plate, options) {
   }
 
   function syncSize() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const dpr = Math.min(devicePixelRatio || 1, COARSE ? 1.5 : 2);
     const w = Math.max(1, Math.round(output.clientWidth * dpr));
     const h = Math.max(1, Math.round(output.clientHeight * dpr));
     if (output.width !== w || output.height !== h) { output.width = w; output.height = h; }
@@ -4041,8 +4057,13 @@ function createCloth(output, plate, options) {
     ptr.x = x; ptr.y = y; ptr.inside = true; start();
   };
   const onLeave = () => { ptr.inside = false; };
+  /* A touch never fires pointerleave, so lift the brush on release as well —
+     otherwise the fabric stays pinched under the last finger position. */
+  const onEnd = e => { if (e.pointerType !== 'mouse') onLeave(); };
   wrapper.addEventListener('pointermove', onMove, { passive: true });
   wrapper.addEventListener('pointerleave', onLeave, { passive: true });
+  wrapper.addEventListener('pointerup', onEnd, { passive: true });
+  wrapper.addEventListener('pointercancel', onEnd, { passive: true });
   const onHidden = () => { if (document.hidden) { running = false; cancelAnimationFrame(raf); } else start(); };
   document.addEventListener('visibilitychange', onHidden);
 
@@ -4069,13 +4090,15 @@ function clothPlate(img, w, h) {
 }
 
 function buildCardCloth() {
-  if (COARSE) return;                     /* no pointer to brush it with */
+  /* A phone gets the wind-driven cloth too. Only the hover brush needs a
+     mouse; the billowing motion is the point of the plates and used to vanish
+     entirely on touch devices. */
   $$('.cards .card-fr').forEach(fr => {
     const url = (getComputedStyle(fr).backgroundImage.match(/url\(["']?([^"')]+)/) || [])[1];
     if (!url) return;
     const img = new Image();
     img.onload = () => {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = Math.min(devicePixelRatio || 1, COARSE ? 1.5 : 2);
       let plate = null, pw = 0, ph = 0;
       const get = () => {
         const w = Math.round(fr.clientWidth * dpr), h = Math.round(fr.clientHeight * dpr);
@@ -4088,12 +4111,20 @@ function buildCardCloth() {
       const inst = createCloth(out, get, { wind: 3, speed: .5, amplitude: 30, drape: 40,
         brush: 2.05, brushSize: 150, damping: 1, light: .5, sheen: .1, shadow: .25,
         cornerRadius: 20, perspective: 1200, pin: 'top' });
-      /* only hide the card's own painting once the fabric is really carrying it */
-      if (!inst) { out.remove(); return; }
+      /* Only hide the card's still once the fabric is really carrying it. On a
+         phone without WebGL2 there is no cloth, so give the still a shallow CSS
+         billow instead of leaving the projects perfectly flat. */
+      if (!inst) {
+        out.remove();
+        if (COARSE) fr.classList.add('no-cloth');
+        return;
+      }
       fr.classList.add('on-cloth');
       const card = fr.closest('.card') || fr;
-      card.addEventListener('pointerenter', () => inst.setEdge(.185), { passive: true });
-      card.addEventListener('pointerleave', () => inst.setEdge(.048), { passive: true });
+      if (!COARSE) {
+        card.addEventListener('pointerenter', () => inst.setEdge(.185), { passive: true });
+        card.addEventListener('pointerleave', () => inst.setEdge(.048), { passive: true });
+      }
     };
     img.onerror = () => {};
     img.src = url;
@@ -4358,7 +4389,7 @@ function layoutWord() {
   const s = (R.x - L.x) * fill / WORD.ink.w;
   /* on a tall frame the mounds sit near mid-height, so the baseline has to
      ride above them or the whole word disappears into the grass */
-  const base = hit(0, narrow ? -.16 : -.585);
+  const base = hit(0, narrow ? -.06 : -.36);
   WORD.group.scale.setScalar(s);
   WORD.group.position.set(-WORD.ink.cx * s, base.y, WORD_Z);
   WORD.rise = WORD.ink.asc * s * 1.25;
